@@ -316,27 +316,147 @@ h2 {
 }
 
 /* ========================================
-   RESPONSIVE
+   RESPONSIVE - DISEÑO MÓVIL
    ======================================== */
 @media (max-width: 768px) {
-    .menu-grid {
-        grid-template-columns: 1fr;
+    body {
+        padding: 10px;
     }
     
-    .carrito-item {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .item-controles {
-        justify-content: center;
-    }
-    
-    .item-subtotal {
-        text-align: center;
+    .container {
+        padding: 15px;
+        border-radius: 10px;
     }
     
     h1 {
         font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    
+    h2 {
+        font-size: 1.3em;
+        margin: 15px 0;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .menu-item {
+        padding: 15px;
+    }
+    
+    .menu-item h3 {
+        font-size: 1.2em;
+    }
+    
+    .menu-item p {
+        font-size: 0.9em;
+    }
+    
+    .precio {
+        font-size: 1.3em;
+    }
+    
+    .btn-agregar {
+        padding: 10px 20px;
+        font-size: 0.95em;
+    }
+    
+    /* Carrito responsive */
+    .carrito {
+        padding: 15px;
+    }
+    
+    .carrito-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .item-info h4 {
+        font-size: 1em;
+    }
+    
+    .item-controles {
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .item-controles button {
+        padding: 8px 15px;
+    }
+    
+    .item-cantidad {
+        font-size: 1.1em;
+        padding: 0 15px;
+    }
+    
+    .item-subtotal {
+        text-align: center;
+        font-size: 1.1em;
+        margin-top: 5px;
+    }
+    
+    .carrito-total {
+        font-size: 1.3em;
+        padding: 15px;
+    }
+    
+    .carrito-acciones {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .carrito-acciones button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1em;
+    }
+    
+    /* Formulario responsive */
+    .formulario-pedido {
+        padding: 15px;
+    }
+    
+    .form-group label {
+        font-size: 0.95em;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        font-size: 16px; /* Evita zoom en iOS */
+    }
+    
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .form-buttons button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1em;
+    }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    .menu-item {
+        padding: 12px;
+    }
+    
+    .precio {
+        font-size: 1.2em;
     }
 }

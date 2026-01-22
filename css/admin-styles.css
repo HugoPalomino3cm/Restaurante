@@ -588,27 +588,223 @@ h1 {
 }
 
 /* ========================================
-   RESPONSIVE
+   RESPONSIVE - DISEÑO MÓVIL
    ======================================== */
 @media (max-width: 768px) {
+    .admin-container {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    
+    h2 {
+        font-size: 1.3em;
+    }
+    
+    /* Pestañas apiladas verticalmente */
+    .tabs {
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px;
+    }
+    
+    .tab-button {
+        padding: 12px 15px;
+        font-size: 0.95em;
+    }
+    
+    /* Filtros responsive */
+    .filtros {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+    }
+    
+    .filtro-btn {
+        flex: 1 1 calc(50% - 4px);
+        min-width: 120px;
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    
+    /* Grid de pedidos a una columna */
     .pedidos-grid {
         grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    /* Tarjetas de pedido más compactas */
+    .pedido-card {
+        padding: 15px;
+    }
+    
+    .pedido-header h3 {
+        font-size: 1em;
+    }
+    
+    .pedido-header .pedido-estado {
+        font-size: 0.85em;
+        padding: 4px 10px;
+    }
+    
+    .select-estado {
+        font-size: 0.9em;
+        padding: 8px;
+    }
+    
+    /* Productos del pedido */
+    .pedido-productos {
+        font-size: 0.9em;
+    }
+    
+    .producto-item {
+        padding: 8px;
+    }
+    
+    /* Total del pedido */
+    .pedido-total {
+        font-size: 1.2em;
+        padding: 12px;
+    }
+    
+    /* Formulario de platos responsive */
+    .form-container {
+        padding: 15px;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 16px; /* Evita zoom en iOS */
+    }
+    
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .form-buttons button {
+        width: 100%;
+        padding: 12px;
+    }
+    
+    /* Items del menú admin */
+    .menu-admin-grid {
+        gap: 15px;
     }
     
     .menu-item-admin {
         flex-direction: column;
+        padding: 15px;
     }
     
     .menu-item-admin img {
         width: 100%;
         height: 200px;
+        margin-right: 0;
+        margin-bottom: 15px;
     }
     
-    .tabs {
+    .menu-item-info h3 {
+        font-size: 1.1em;
+    }
+    
+    .menu-item-info p {
+        font-size: 0.9em;
+    }
+    
+    .menu-item-precio {
+        font-size: 1.3em;
+    }
+    
+    .menu-item-acciones {
         flex-direction: column;
+        gap: 8px;
+    }
+    
+    .menu-item-acciones button {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    
+    /* Estadísticas responsive */
+    .filtro-fecha {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+    
+    .filtro-fecha input,
+    .filtro-fecha button {
+        width: 100%;
+        font-size: 16px;
     }
     
     .stats-resumen {
         grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .stat-card h3 {
+        font-size: 1em;
+    }
+    
+    .stat-valor {
+        font-size: 2em;
+    }
+    
+    /* Tabla de platos vendidos */
+    .tabla-platos-vendidos {
+        font-size: 0.85em;
+    }
+    
+    .tabla-platos-vendidos th,
+    .tabla-platos-vendidos td {
+        padding: 8px 5px;
+    }
+    
+    /* Botones generales */
+    .btn-agregar {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .admin-container {
+        padding: 5px;
+    }
+    
+    .pedido-card,
+    .form-container,
+    .menu-item-admin {
+        padding: 12px;
+    }
+    
+    .filtro-btn {
+        font-size: 0.85em;
+        padding: 8px;
+    }
+    
+    .stat-valor {
+        font-size: 1.8em;
+    }
+    
+    .tabla-platos-vendidos {
+        font-size: 0.75em;
     }
 }
