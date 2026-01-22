@@ -339,29 +339,29 @@ h2 {
     }
     
     .menu-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
     
     .menu-item {
-        padding: 15px;
+        padding: 12px;
     }
     
     .menu-item h3 {
-        font-size: 1.2em;
+        font-size: 1em;
     }
     
     .menu-item p {
-        font-size: 0.9em;
+        font-size: 0.85em;
     }
     
     .precio {
-        font-size: 1.3em;
+        font-size: 1.2em;
     }
     
     .btn-agregar {
-        padding: 10px 20px;
-        font-size: 0.95em;
+        padding: 8px 16px;
+        font-size: 0.9em;
     }
     
     /* Carrito responsive */
@@ -452,11 +452,29 @@ h2 {
         padding: 10px;
     }
     
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
     .menu-item {
-        padding: 12px;
+        padding: 10px;
+    }
+    
+    .menu-item h3 {
+        font-size: 0.95em;
+    }
+    
+    .menu-item p {
+        font-size: 0.8em;
     }
     
     .precio {
-        font-size: 1.2em;
+        font-size: 1.1em;
+    }
+    
+    .btn-agregar {
+        padding: 6px 12px;
+        font-size: 0.85em;
     }
 }
