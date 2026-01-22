@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poblar Base de Datos - Restaurante</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        .log {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .success { color: #27ae60; }
+        .error { color: #e74c3c; }
+        .info { color: #3498db; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Poblar Base de Datos</h1>
+        <p>Este script agrega datos de ejemplo a tu base de datos Firestore.</p>
+        
+        <button onclick="poblarMenu()">Agregar Platos al Menú</button>
+        <button onclick="poblarPedidoPrueba()">Crear Pedido de Prueba</button>
+        <br>
+        <button onclick="limpiarEstadisticas()" style="background: #f39c12;">Limpiar Solo Estadísticas</button>
+        <button onclick="limpiarPedidos()" style="background: #e67e22;">Limpiar Solo Pedidos</button>
+        <button onclick="limpiarTodo()" style="background: #e74c3c;">Limpiar TODO</button>
+        
+        <div id="log" class="log"></div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+        // Función para agregar logs en pantalla
+        function log(mensaje, tipo = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `<div class="${tipo}">[${timestamp}] ${mensaje}</div>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(mensaje);
+        }
+
+        // ========================================
+        // POBLAR MENÚ CON PLATOS DE EJEMPLO
+        // ========================================
+        async function poblarMenu() {
+            log('Iniciando población del menú...', 'info');
+            
+            // Array de platos de ejemplo (Precios en pesos chilenos)
+            const platos = [
+                {
+                    nombre: "Pizza Margarita",
+                    descripcion: "Pizza clásica con salsa de tomate, mozzarella fresca y albahaca",
+                    precio: 11990,
+                    categoria: "platos_fuertes",
+                    imagen: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400",
+                    disponible: true
+                },
+                {
+                    nombre: "Hamburguesa Clásica",
+                    descripcion: "Carne 100% res, lechuga, tomate, cebolla y queso cheddar",
+                    precio: 9990,
+                    categoria: "platos_fuertes",
+                    imagen: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400",
+                    disponible: true
+                },
+                {
+                    nombre: "Ensalada César",
+                    descripcion: "Lechuga romana, pollo a la parrilla, crutones y aderezo césar",
+                    precio: 7990,
+                    categoria: "entradas",
+                    imagen: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400",
+                    disponible: true
+                },
+                {
+                    nombre: "Pasta Carbonara",
+                    descripcion: "Spaghetti con salsa carbonara, tocino y parmesano",
+                    precio: 12990,
+                    categoria: "platos_fuertes",
+                    imagen: "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=400",
+                    disponible: true
+                },
+                {
+                    nombre: "Tacos al Pastor",
+                    descripcion: "3 tacos con carne al pastor, piña, cilantro y cebolla",
+                    precio: 8990,
+                    categoria: "platos_fuertes",
+                    imagen: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400",
+                    disponible: true
+                },
+                {
+                    nombre: "Sushi Variado",
+                    descripcion: "12 piezas de sushi con salmón, atún y camarón",
+                    precio: 16990,
+                    categoria: "platos_fuertes",
+                    imagen: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400",
+                    disponible: true
+                },
+                {
+                    nombre: "Tiramisu",
+                    descripcion: "Postre italiano con café, mascarpone y cacao",
+                    precio: 5490,
+                    categoria: "postres",
+                    imagen: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400",
+                    disponible: true
+                },
+                {
+                    nombre: "Helado Artesanal",
+                    descripcion: "3 bolas de helado: chocolate, vainilla y fresa",
+                    precio: 4990,
+                    categoria: "postres",
+                    imagen: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400",
+                    disponible: true
+                },
+                {
+                    nombre: "Limonada Natural",
+                    descripcion: "Limonada fresca hecha con limones naturales",
+                    precio: 2990,
+                    categoria: "bebidas",
+                    imagen: "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400",
+                    disponible: true
+                },
+                {
+                    nombre: "Café Americano",
+                    descripcion: "Café espresso con agua caliente",
+                    precio: 1990,
+                    categoria: "bebidas",
+                    imagen: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=400",
+                    disponible: true
+                }
+            ];
+
+            try {
+                // Usar Promise.all para agregar todos los platos en paralelo
+                const promesas = platos.map(plato => menuRef.add(plato));
+                await Promise.all(promesas);
+                
+                log(`✅ Se agregaron ${platos.length} platos al menú correctamente`, 'success');
+            } catch (error) {
+                log(`❌ Error al poblar el menú: ${error.message}`, 'error');
+            }
+        }
+
+        // ========================================
+        // CREAR PEDIDO DE PRUEBA
+        // ========================================
+        async function poblarPedidoPrueba() {
+            log('Creando pedido de prueba...', 'info');
+            
+            const pedidoPrueba = {
+                cliente: {
+                    nombre: "Cliente de Prueba",
+                    telefono: "+1234567890",
+                    direccion: "Calle Principal 123, Ciudad",
+                    notas: "Este es un pedido de prueba"
+                },
+                productos: [
+                    {
+                        id: "test1",
+                        nombre: "Pizza Margarita",
+                        precio: 11990,
+                        cantidad: 2,
+                        subtotal: 23980
+                    },
+                    {
+                        id: "test2",
+                        nombre: "Limonada Natural",
+                        precio: 2990,
+                        cantidad: 2,
+                        subtotal: 5980
+                    }
+                ],
+                total: 29960,
+                estado: 'pendiente',
+                fechaCreacion: firebase.firestore.FieldValue.serverTimestamp(),
+                fecha: obtenerFechaActual(),
+                hora: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            try {
+                const docRef = await pedidosRef.add(pedidoPrueba);
+                log(`✅ Pedido de prueba creado con ID: ${docRef.id}`, 'success');
+                
+                // Actualizar estadísticas
+                const fecha = obtenerFechaActual();
+                await estadisticasRef.doc(fecha).set({
+                    fecha: fecha,
+                    totalVentas: firebase.firestore.FieldValue.increment(29960),
+                    totalPedidos: firebase.firestore.FieldValue.increment(1),
+                    ultimaActualizacion: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                
+                log('✅ Estadísticas actualizadas', 'success');
+            } catch (error) {
+                log(`❌ Error al crear pedido: ${error.message}`, 'error');
+            }
+        }
+
+        // ========================================
+        // LIMPIAR SOLO ESTADÍSTICAS
+        // ========================================
+        async function limpiarEstadisticas() {
+            if (!confirm('¿Eliminar todas las estadísticas de prueba?')) {
+                return;
+            }
+            
+            log('Limpiando estadísticas...', 'info');
+            
+            try {
+                const statsSnapshot = await estadisticasRef.get();
+                
+                if (statsSnapshot.empty) {
+                    log('⚠️ No hay estadísticas para eliminar', 'info');
+                    return;
+                }
+                
+                // Eliminar documentos de estadísticas
+                const batch = db.batch();
+                for (const doc of statsSnapshot.docs) {
+                    batch.delete(doc.ref);
+                    
+                    // También eliminar la subcolección de platosVendidos
+                    const platosSnapshot = await doc.ref.collection('platosVendidos').get();
+                    platosSnapshot.docs.forEach(platoDoc => batch.delete(platoDoc.ref));
+                }
+                
+                await batch.commit();
+                log(`✅ ${statsSnapshot.size} registros de estadísticas eliminados`, 'success');
+                log('✅ Estadísticas limpiadas. Listo para empezar de nuevo', 'success');
+            } catch (error) {
+                log(`❌ Error al limpiar estadísticas: ${error.message}`, 'error');
+            }
+        }
+
+        // ========================================
+        // LIMPIAR SOLO PEDIDOS
+        // ========================================
+        async function limpiarPedidos() {
+            if (!confirm('¿Eliminar todos los pedidos de prueba?')) {
+                return;
+            }
+            
+            log('Limpiando pedidos...', 'info');
+            
+            try {
+                const pedidosSnapshot = await pedidosRef.get();
+                
+                if (pedidosSnapshot.empty) {
+                    log('⚠️ No hay pedidos para eliminar', 'info');
+                    return;
+                }
+                
+                const batch = db.batch();
+                pedidosSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+                
+                log(`✅ ${pedidosSnapshot.size} pedidos eliminados`, 'success');
+            } catch (error) {
+                log(`❌ Error al limpiar pedidos: ${error.message}`, 'error');
+            }
+        }
+
+        // ========================================
+        // LIMPIAR TODO (¡CUIDADO!)
+        // ========================================
+        async function limpiarTodo() {
+            if (!confirm('⚠️ ¿Estás seguro? Esto eliminará TODOS los datos de la base de datos.')) {
+                return;
+            }
+            
+            if (!confirm('⚠️ ¿REALMENTE seguro? Esta acción NO se puede deshacer.')) {
+                return;
+            }
+            
+            log('Limpiando base de datos completa...', 'info');
+            
+            try {
+                // Limpiar pedidos
+                const pedidosSnapshot = await pedidosRef.get();
+                const batch1 = db.batch();
+                pedidosSnapshot.docs.forEach(doc => batch1.delete(doc.ref));
+                await batch1.commit();
+                log(`✅ ${pedidosSnapshot.size} pedidos eliminados`, 'success');
+                
+                // Limpiar menú
+                const menuSnapshot = await menuRef.get();
+                const batch2 = db.batch();
+                menuSnapshot.docs.forEach(doc => batch2.delete(doc.ref));
+                await batch2.commit();
+                log(`✅ ${menuSnapshot.size} platos eliminados`, 'success');
+                
+                // Limpiar estadísticas
+                const statsSnapshot = await estadisticasRef.get();
+                const batch3 = db.batch();
+                for (const doc of statsSnapshot.docs) {
+                    batch3.delete(doc.ref);
+                    const platosSnapshot = await doc.ref.collection('platosVendidos').get();
+                    platosSnapshot.docs.forEach(platoDoc => batch3.delete(platoDoc.ref));
+                }
+                await batch3.commit();
+                log(`✅ ${statsSnapshot.size} estadísticas eliminadas`, 'success');
+                
+                log('✅ Base de datos limpiada completamente', 'success');
+            } catch (error) {
+                log(`❌ Error al limpiar: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

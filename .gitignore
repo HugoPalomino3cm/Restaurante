@@ -1,0 +1,26 @@
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Configuración local (si decides guardarla en archivo separado)
+firebase-config-local.js
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (si decides usar npm en el futuro)
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+npm-debug.log*

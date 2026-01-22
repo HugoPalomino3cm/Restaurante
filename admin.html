@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Restaurante</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Panel de Administración</h1>
+        
+        <!-- PESTAÑAS DE NAVEGACIÓN -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="mostrarSeccion('pedidos')">Pedidos</button>
+            <button class="tab-button" onclick="mostrarSeccion('menu')">Gestión de Menú</button>
+            <button class="tab-button" onclick="mostrarSeccion('estadisticas')">Estadísticas</button>
+        </div>
+
+        <!-- SECCIÓN DE PEDIDOS EN TIEMPO REAL -->
+        <div id="seccion-pedidos" class="seccion active">
+            <h2>Pedidos en Tiempo Real</h2>
+            
+            <!-- Filtros por estado -->
+            <div class="filtros">
+                <button class="filtro-btn active" onclick="filtrarPedidos('todos')">Todos</button>
+                <button class="filtro-btn" onclick="filtrarPedidos('pendiente')">Pendientes</button>
+                <button class="filtro-btn" onclick="filtrarPedidos('en_preparacion')">En Preparación</button>
+                <button class="filtro-btn" onclick="filtrarPedidos('completado')">Completados</button>
+            </div>
+
+            <!-- Contenedor de pedidos -->
+            <div id="pedidos-container" class="pedidos-grid">
+                <!-- Los pedidos se cargarán aquí en tiempo real -->
+                <p class="sin-pedidos">No hay pedidos en este momento</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE GESTIÓN DEL MENÚ (CRUD) -->
+        <div id="seccion-menu" class="seccion">
+            <h2>Gestión del Menú</h2>
+            
+            <!-- Botón para agregar nuevo plato -->
+            <button class="btn-agregar" onclick="mostrarFormularioPlato()">+ Agregar Nuevo Plato</button>
+            
+            <!-- Formulario para agregar/editar platos -->
+            <div id="form-plato-container" class="form-container" style="display: none;">
+                <h3 id="form-titulo">Nuevo Plato</h3>
+                <form id="form-plato">
+                    <input type="hidden" id="plato-id">
+                    <div class="form-group">
+                        <label for="plato-nombre">Nombre del plato:</label>
+                        <input type="text" id="plato-nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plato-descripcion">Descripción:</label>
+                        <textarea id="plato-descripcion" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="plato-precio">Precio ($):</label>
+                        <input type="number" id="plato-precio" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plato-categoria">Categoría:</label>
+                        <select id="plato-categoria" required>
+                            <option value="entradas">Entradas</option>
+                            <option value="platos_fuertes">Platos Fuertes</option>
+                            <option value="postres">Postres</option>
+                            <option value="bebidas">Bebidas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Imagen del plato:</label>
+                        <div style="margin-bottom: 10px;">
+                            <label>
+                                <input type="radio" name="tipo-imagen" value="url" checked onchange="toggleImageInput()"> URL de imagen
+                            </label>
+                            <label style="margin-left: 20px;">
+                                <input type="radio" name="tipo-imagen" value="file" onchange="toggleImageInput()"> Subir archivo
+                            </label>
+                        </div>
+                        <input type="url" id="plato-imagen" placeholder="https://ejemplo.com/imagen.jpg">
+                        <input type="file" id="plato-imagen-file" accept="image/*" style="display: none;">
+                        <div id="upload-progress" style="display: none; margin-top: 10px;">
+                            <div style="background: #e0e0e0; border-radius: 10px; height: 20px; overflow: hidden;">
+                                <div id="progress-bar" style="background: #667eea; height: 100%; width: 0%; transition: width 0.3s;"></div>
+                            </div>
+                            <p id="progress-text" style="margin-top: 5px; font-size: 14px; color: #666;"></p>
+                        </div>
+                    </div>
+                    <div class="form-group checkbox">
+                        <label>
+                            <input type="checkbox" id="plato-disponible" checked>
+                            Disponible para pedidos
+                        </label>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-guardar">Guardar</button>
+                        <button type="button" class="btn-cancelar" onclick="ocultarFormularioPlato()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista de platos del menú -->
+            <div id="menu-admin-container" class="menu-admin-grid">
+                <!-- Los platos se cargarán aquí -->
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE ESTADÍSTICAS -->
+        <div id="seccion-estadisticas" class="seccion">
+            <h2>Estadísticas de Ventas</h2>
+            
+            <!-- Selector de fecha -->
+            <div class="filtro-fecha">
+                <label for="fecha-stats">Ver estadísticas del día:</label>
+                <input type="date" id="fecha-stats">
+                <button onclick="cargarEstadisticas()">Actualizar</button>
+            </div>
+
+            <!-- Resumen de ventas -->
+            <div class="stats-resumen">
+                <div class="stat-card">
+                    <h3>Total de Ventas</h3>
+                    <p class="stat-valor">$<span id="total-ventas">0.00</span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pedidos Vendidos</h3>
+                    <p class="stat-valor"><span id="total-pedidos">0</span></p>
+                </div>
+                <div class="stat-card">
+                    <h3>Ticket Promedio</h3>
+                    <p class="stat-valor">$<span id="ticket-promedio">0.00</span></p>
+                    <p style="font-size: 14px; color: #555; margin-top: 10px; font-weight: 500;">Valor promedio por pedido</p>
+                </div>
+            </div>
+
+            <!-- Platos más vendidos -->
+            <div class="platos-mas-vendidos">
+                <h3>Platos Más Vendidos</h3>
+                <div id="platos-vendidos-list">
+                    <!-- Se cargará la lista aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIGURACIÓN DE FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <!-- Archivo de configuración de Firebase -->
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Lógica del administrador -->
+    <script src="js/admin.js"></script>
+</body>
+</html>

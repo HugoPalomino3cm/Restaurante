@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante - Menú</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- SECCIÓN DEL MENÚ -->
+    <div class="container">
+        <h1>Menú del Restaurante</h1>
+        
+        <!-- Aquí se mostrarán los platos disponibles -->
+        <div id="menu-container" class="menu-grid">
+            <!-- Los platos se cargarán dinámicamente desde Firestore -->
+        </div>
+
+        <!-- CARRITO DE COMPRAS -->
+        <div class="carrito-section">
+            <h2>Tu Pedido</h2>
+            <div id="carrito-items">
+                <!-- Los items del carrito se mostrarán aquí -->
+                <p class="carrito-vacio">Tu carrito está vacío</p>
+            </div>
+            <div class="carrito-total">
+                <h3>Total: $<span id="total-carrito">0.00</span></h3>
+            </div>
+        </div>
+
+        <!-- FORMULARIO DE DATOS DEL CLIENTE -->
+        <div id="formulario-cliente" class="formulario-section" style="display: none;">
+            <h2>Datos de Entrega</h2>
+            <form id="form-pedido">
+                <div class="form-group">
+                    <label for="nombre">Nombre completo:</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" id="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="direccion">Dirección de entrega / Número de mesa:</label>
+                    <textarea id="direccion" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="notas">Notas adicionales (opcional):</label>
+                    <textarea id="notas"></textarea>
+                </div>
+                <button type="submit" class="btn-confirmar">Confirmar Pedido</button>
+                <button type="button" class="btn-cancelar" onclick="ocultarFormulario()">Cancelar</button>
+            </form>
+        </div>
+
+        <button id="btn-proceder" class="btn-proceder" onclick="mostrarFormulario()" style="display: none;">
+            Proceder al Pedido
+        </button>
+    </div>
+
+    <!-- CONFIGURACIÓN DE FIREBASE -->
+    <!-- Incluimos las librerías de Firebase desde CDN -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <!-- Archivo de configuración de Firebase -->
+    <script src="js/firebase-config.js"></script>
+    
+    <!-- Lógica del cliente -->
+    <script src="js/cliente.js"></script>
+</body>
+</html>
