@@ -56,6 +56,8 @@ h2 {
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
 }
 
 .plato-card:hover {
@@ -83,6 +85,7 @@ h2 {
     font-size: 0.9em;
     margin-bottom: 15px;
     min-height: 40px;
+    flex-grow: 1;
 }
 
 .plato-card .precio {
@@ -90,6 +93,7 @@ h2 {
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 15px;
+    margin-top: auto;
 }
 
 /* ========================================
